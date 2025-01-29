@@ -17,31 +17,19 @@ export class AuthService {
   ) { }
 
   // Registro de usuarios
-  async register(data: RegisterDto, res: Response) {
-    const { password } = data;
-
-    const hashPass = await hash(password, 10);
-    const data_updated = { ...data, password: hashPass };
+  async register(data: RegisterDto,) {
 
     try {
-      const response = await this.prisma.users.create({
-        data: data_updated
-      });
-
-      const { password, role_id, ...newUser } = response;
-
-      res.json({
-        message: "successful registration",
-        newUser
-      });
+      const { password, role_id, ...new_user } = await this.prisma.users.create({ data });
+      return new_user;
 
     } catch (error) {
       const { code, meta } = error;
       if (code === 'P2002') {
-        if (meta.target === 'users_username_key') {
+        if (meta?.target === 'users_username_key') {
           throw new ConflictException('The username already exists');
         }
-        if (meta.target === 'users_email_key') {
+        if (meta?.target === 'users_email_key') {
           throw new ConflictException('The email already exists');
         }
       }
@@ -99,3 +87,8 @@ export class AuthService {
     console.log(req.cookies)
   }
 }
+
+
+// POR FAVOR MI REY TIENES QUE CAMBIAR TODO JAJAJA HAZ QUE EL REQ Y ESO ESTE SOLO EN EL CONTROLADOR
+// Y CAMBIA LA FORMA DE LOS SERVICIOS
+// VAS BIEN BRO VAS A PODER CON TODO Y TENER TU ZX10R

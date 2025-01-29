@@ -13,15 +13,24 @@ export class AuthController {
   @Post('register')
   @HttpCode(200)
   async create(@Body() registerUser: RegisterDto) {
-
-    registerUser.password = await hash(registerUser.password, 10);
     return await this.authService.register(registerUser);
   }
 
   @Post('login')
   @HttpCode(200)
   async login(@Body() loginUser: LoginDto, @Res() res: Response) {
-    return await this.authService.login(loginUser, res);
+
+    const token = await this.authService.login(loginUser);
+    return res
+      .cookie('token', token, {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 1 * 60 * 60 * 1000
+      })
+      .json({
+        message: "Successful authentication"
+      });
   }
 
   // RECUPERACION DE CONTRASELA (Forgot password)
@@ -30,7 +39,7 @@ export class AuthController {
 
   // CAMBIAR CONTRASEÑA (Reset password)
 
-  // RUTA DE DEPURACIÓN
+  // ruta de depuración
   @Get('cookies')
   @HttpCode(200)
   async getcookies(@Req() req: Request) {

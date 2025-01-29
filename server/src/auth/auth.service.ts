@@ -20,6 +20,8 @@ export class AuthService {
   async register(data: RegisterDto,) {
 
     try {
+      data.password = await hash(data.password, 10);
+
       const { password, role_id, ...new_user } = await this.prisma.users.create({ data });
       return new_user;
 
@@ -37,40 +39,22 @@ export class AuthService {
     }
   }
 
-  async login(data: LoginDto, res: Response) {
-    const { email, password } = data;
+  async login(data: LoginDto) {
     try {
-      // Email validation
-      const validate_email = await existEmail(email, this.prisma);
+
+      const validate_email = await existEmail(data.email, this.prisma);
       if (!validate_email) throw new NotFoundException('Email not found');
 
-      // Compare credentials
       const { role_id, password: password_hash, ...user_info } = await this.prisma.users.findFirst({
-        include: {
-          role_user: true
-        },
-        where: {
-          email
-        }
+        include: { role_user: true },
+        where: { email: data.email }
       });
 
-      const is_validate_password = await compare(password, password_hash);
+      const is_validate_password = await compare(data.password, password_hash);
       if (!is_validate_password) throw new UnauthorizedException('incorrect credentials');
 
-      // Create payload
-      const payload = { ...user_info };
-      const token = await this.jwt.sign(payload);
-
-      res
-        .cookie('token', token, {
-          path: '/',
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          maxAge: 1 * 60 * 60 * 1000
-        })
-        .json({
-          message: "Successful authentication"
-        });
+      const token = await this.jwt.sign({ ...user_info });
+      return token;
 
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
@@ -79,7 +63,6 @@ export class AuthService {
 
       throw new InternalServerErrorException();
     }
-
   }
 
   // METODO DE DEPURACIÓN

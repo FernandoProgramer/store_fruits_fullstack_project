@@ -12,12 +12,13 @@ async function bootstrap() {
     }));
 
   app.enableCors({
-    origin: '' // dominio del frontend
-  }) 
+    origin: 'http://localhost:3001', // dominio del frontend
+    credentials: true
+  })
 
   app.use(cookieParser());
 
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();

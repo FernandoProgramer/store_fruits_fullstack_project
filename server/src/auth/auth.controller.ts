@@ -1,10 +1,8 @@
-import { Controller, Post, Body, HttpCode, Res, Get, Req, InternalServerErrorException, ConflictException } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, Res, Get, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register-auth';
-
 import { LoginDto } from './dto/login-auth';
 import { Request, Response } from 'express';
-import { hash } from 'bcrypt';
 
 @Controller('auth')
 export class AuthController {
@@ -38,6 +36,7 @@ export class AuthController {
   // CERRAR SESION (Logout)
 
   // CAMBIAR CONTRASEÑA (Reset password)
+
 
   // ruta de depuración
   @Get('cookies')

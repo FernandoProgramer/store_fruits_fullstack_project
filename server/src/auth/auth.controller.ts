@@ -12,8 +12,8 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(200)
-  async create(@Body() registerUser: RegisterDto) {
-    return await this.authService.register(registerUser);
+  create(@Body() registerUser: RegisterDto) {
+    return this.authService.register(registerUser);
   }
 
   @Post('login')
@@ -42,7 +42,7 @@ export class AuthController {
   // ruta de depuración
   @Get('cookies')
   @HttpCode(200)
-  async getcookies(@Req() req: Request) {
-    return this.authService.getcookie(req);
+  getcookies(@Req() req: Request) {
+    return req.cookies;
   }
 }

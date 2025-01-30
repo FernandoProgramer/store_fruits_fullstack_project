@@ -5,7 +5,6 @@ import { LoginDto } from './dto/login-auth';
 import { compare, hash } from 'bcrypt';
 import { existEmail } from 'common/validate-email.common';
 import { JwtService } from '@nestjs/jwt';
-import { Request, Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -65,10 +64,6 @@ export class AuthService {
     }
   }
 
-  // METODO DE DEPURACIÓN
-  getcookie(req: Request) {
-    console.log(req.cookies)
-  }
 }
 
 

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Res, InternalServerErrorException, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, HttpCode } from '@nestjs/common';
 import { FruitsService } from './fruits.service';
 import { CreateFruitDto } from './dto/create-fruit.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { Request, Response } from 'express';
+import { Request } from 'express';
+import { UpdateFruitDto } from './dto/update-fruit.dto';
 
 @Controller('fruits')
 export class FruitsController {
@@ -11,36 +12,37 @@ export class FruitsController {
   @Post()
   @UseGuards(AuthGuard)
   @HttpCode(201)
-  async create(@Body() createFruitDto: CreateFruitDto, @Req() req: Request) {
-
+  create(@Body() createFruitDto: CreateFruitDto, @Req() req: Request) {
     const { id } = req['user'];
-    try {
-      const response = await this.fruitsService.create(createFruitDto, id);
-      return response;
-
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-
+    return this.fruitsService.create(createFruitDto, id);
   }
 
   @Get()
-  findAll(@Res() res: Response) {
-    return this.fruitsService.findAll(res);
+  @HttpCode(200)
+  findAll() {
+    return this.fruitsService.findAll();
   }
 
   @Get(':id')
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.fruitsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFruitDto) {
-    return this.fruitsService.update(+id, updateFruitDto);
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  update(@Param('id') id: string, @Body() updateFruitDto: UpdateFruitDto, @Req() request: Request) {
+    const seller_id = request['user']?.id;
+    return this.fruitsService.update(+id, updateFruitDto, +seller_id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fruitsService.remove(+id);
+  @HttpCode(204)
+  @UseGuards(AuthGuard)
+  remove(@Param('id') id: string, @Req() request: Request) {
+    const seller_id = request['user']?.id;
+    return this.fruitsService.remove(+id, seller_id);
   }
 }

@@ -18,7 +18,4 @@ export class CreateFruitDto {
     @IsString()
     description?: string
 
-    @IsNumber()
-    seller_id: number
-
 }

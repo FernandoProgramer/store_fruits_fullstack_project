@@ -1,0 +1,1 @@
+export const title_web_project = 'Store Fruits ADRU'

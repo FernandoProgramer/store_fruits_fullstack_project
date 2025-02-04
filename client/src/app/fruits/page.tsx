@@ -1,4 +1,3 @@
-
 import FruitsCard from "../../components/ui/FruitsCard"
 import { Roboto } from 'next/font/google'
 import SearchInput from "@/components/ui/SearchInput";
@@ -11,7 +10,8 @@ const roboto = Roboto({
 })
 
 export default async function FruitsPage() {
-  const fruits: FruitsInterface[] = await getFruits();
+
+  const fruits = await getFruits();
 
   return (
     <div className={roboto.className}>

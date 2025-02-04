@@ -7,7 +7,6 @@ export async function getFruits(): Promise<FruitsInterface[]> {
         const fruits = await fetch(`${URL_API_FRUITS}`, { cache: 'no-store' });
         return await fruits.json();
     } catch (error) {
-        console.log(error);
         return []
     }
 }
@@ -23,7 +22,6 @@ export async function addFruit(newFruit: Omit<FruitsInterface, "id">): Promise<F
         });
         return await response.json();
     } catch (error) {
-        console.log(error);
         return
     }
 }

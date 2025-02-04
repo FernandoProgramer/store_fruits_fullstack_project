@@ -1,27 +1,17 @@
 import { LoginInterface } from "@/interfaces/login.interface";
 import { RegisterInterface } from "@/interfaces/register.interface";
+import { api, Request } from '@/utils/WrapperApiClient';
 
-const URL_API_FRUITS = process.env.NEXT_PUBLIC_URL_PRINCIPAL_API + '/auth';
-
+/**
+ * Servicio para el login.
+ */
 export async function LoginService(data: LoginInterface) {
-    const response = await fetch(`${URL_API_FRUITS}/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-    return await response.json();
+    return Request(() => api.post('auth/login', data));
 }
 
-export async function RegisterService(data: RegisterInterface) {
-    const response = await fetch(`${URL_API_FRUITS}/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-
-    return response.json();
+/**
+ * Servicio para el register.
+ */
+export async function RegisterService(data: Omit<RegisterInterface, "confirmspassword">) {
+    return Request(() => api.post('auth/register', data));
 }

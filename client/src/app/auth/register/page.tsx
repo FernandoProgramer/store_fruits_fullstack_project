@@ -6,12 +6,15 @@ import { RegisterService } from "@/services/auth.service";
 import registerSchema from "@/validations/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 interface FormInputsRegister extends RegisterInterface { }
 
 export default function RegisterPage() {
+  const router = useRouter();
+
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormInputsRegister>({
     resolver: zodResolver(registerSchema)
@@ -20,7 +23,12 @@ export default function RegisterPage() {
   const onSubmit: SubmitHandler<FormInputsRegister> = async (data) => {
     const res = await RegisterService(data);
     if (res) {
-      toast.success('Registered correctly beautiful ❤');
+      toast.success('Registered correctly beautiful ❤, now Sing In Here', {
+        action: {
+          label: 'Sing in Here',
+          onClick: () => router.push('/auth/login')
+        }
+      });
     }
   }
 

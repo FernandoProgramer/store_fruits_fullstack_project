@@ -1,7 +1,6 @@
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 
-
 /**
  * Maneja los errores de Axios de manera uniforme.
  */

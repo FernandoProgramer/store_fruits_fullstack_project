@@ -1,4 +1,4 @@
-import Menu from '@/components/Menu'
+import Menu from '@/components/layouts/Menu'
 import './globals.css'
 import { Roboto } from 'next/font/google'
 import { Toaster } from 'sonner'

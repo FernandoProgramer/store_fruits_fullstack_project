@@ -8,7 +8,7 @@ export default async function FruitsPage() {
   const fruits = await getFruits();
   return (
     <div>
-      <div className="bg-gray-950 p-8 rounded-lg space-y-5">
+      <div className="rounded-lg space-y-5 bg-blue-400">
         <SearchInput />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {fruits.length > 0

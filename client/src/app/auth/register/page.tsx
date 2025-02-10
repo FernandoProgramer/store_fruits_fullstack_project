@@ -1,4 +1,6 @@
 "use client"
+import EmailIcon from "@/components/icons/EmailIcon";
+import UsernameIcon from "@/components/icons/UsernameIcon";
 import ButtonForm from "@/components/ui/ButtonForm";
 import InputForm from "@/components/ui/InputForm";
 import { RegisterInterface } from "@/interfaces/register.interface";
@@ -8,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { GiFruiting } from "react-icons/gi";
 import { toast } from "sonner";
 
 interface FormInputsRegister extends RegisterInterface { }
@@ -60,6 +63,7 @@ export default function RegisterPage() {
                   register={register}
                   error={errors.email}
                   placeholder="Enter your email"
+                  icon={<EmailIcon />}
                 />
               </div>
 
@@ -70,6 +74,7 @@ export default function RegisterPage() {
                   register={register}
                   error={errors.password}
                   placeholder="Enter your password"
+                  type="password"
                 />
               </div>
 
@@ -80,6 +85,7 @@ export default function RegisterPage() {
                   register={register}
                   error={errors.confirmspassword}
                   placeholder="Confirm Password"
+                  type="password"
                 />
               </div>
 
@@ -90,6 +96,7 @@ export default function RegisterPage() {
                   register={register}
                   error={errors.username}
                   placeholder="Enter your Username"
+                  icon={<UsernameIcon />}
                 />
               </div>
 
@@ -105,7 +112,7 @@ export default function RegisterPage() {
                 </Link>
               </div>
 
-              <ButtonForm>
+              <ButtonForm icon={<GiFruiting />}>
                 Sign Up
               </ButtonForm>
             </form>

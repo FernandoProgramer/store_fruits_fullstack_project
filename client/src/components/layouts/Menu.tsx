@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import Navbar from "./ui/Nadvar";
+import Navbar from "./Nadvar";
 
 export default function Menu() {
     const pathname = usePathname();

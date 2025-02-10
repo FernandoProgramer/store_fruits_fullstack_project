@@ -9,6 +9,10 @@ import ButtonForm from '@/components/ui/ButtonForm'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import EmailIcon from '@/components/icons/EmailIcon'
+import { GiFruitTree } from "react-icons/gi";
+
+
 
 export interface FormInputs {
     email: string
@@ -44,6 +48,7 @@ export default function LoginPage() {
                         register={register}
                         error={errors.email}
                         placeholder="Enter your email"
+                        icon={<EmailIcon />}
                     />
                 </div>
 
@@ -51,6 +56,7 @@ export default function LoginPage() {
                     <label htmlFor="password" className="block text-white">Password</label>
                     <InputForm
                         name="password"
+                        type="password"
                         register={register}
                         error={errors.password}
                         placeholder="Enter your password"
@@ -69,7 +75,7 @@ export default function LoginPage() {
                         </Link>
                     </p>
                 </div>
-                <ButtonForm>
+                <ButtonForm icon={<GiFruitTree />}>
                     Sign in
                 </ButtonForm>
             </form>

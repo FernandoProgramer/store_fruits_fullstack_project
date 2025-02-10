@@ -1,4 +1,4 @@
-import ResponsiveSidebar from "@/components/ui/Sidebar";
+import Sidebar from "@/components/layouts/Sidebar";
 import { Roboto } from "next/font/google";
 import { ReactNode } from "react";
 
@@ -16,10 +16,12 @@ const roboto = Roboto({
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
         <div className={roboto.className}>
-            <ResponsiveSidebar>
-                {children}
-            </ResponsiveSidebar>
+            <div className="bg-red-950 min-h-screen flex">
+                <Sidebar />
+                <div className="bg-red-100 flex-grow rounded-tl-[2rem] rounded-bl-[2rem] p-10">
+                    {children}
+                </div>
+            </div>
         </div>
-
     )
 }

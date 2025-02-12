@@ -16,9 +16,9 @@ const roboto = Roboto({
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
         <div className={roboto.className}>
-            <div className="bg-red-950 min-h-screen flex">
+            <div className="bg-gradient-to-t from-red-900 to-slate-900 min-h-screen flex">
                 <Sidebar />
-                <div className="bg-red-100 flex-grow rounded-tl-[2rem] rounded-bl-[2rem] p-10">
+                <div className="bg-gray-950 text-white flex-grow rounded-tl-[2rem] rounded-bl-[2rem] p-10">
                     {children}
                 </div>
             </div>

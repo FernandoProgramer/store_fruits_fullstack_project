@@ -26,7 +26,9 @@ export default async function RootLayout({
         <div className={roboto.className}>
           <Toaster />
           <Menu />
-          {children}
+          <div className="p-4">
+            {children}
+          </div>
         </div>
       </body>
     </html>

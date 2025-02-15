@@ -1,33 +1,101 @@
 "use client"
-
-import { useState } from "react";
-import { Menu, X, Home, User, ShoppingCart, InspectionPanel, Store, DoorOpen, BadgePlus } from "lucide-react";
+import { ReactNode, useState } from "react";
+import { Menu, X, Home, User, ShoppingCart, InspectionPanel, Store, DoorOpen, BadgePlus, LayoutPanelTop, SquareMinus, ChevronsDown, ChevronUp } from "lucide-react";
 import Link from 'next/link'
 import { GiKiwiFruit } from "react-icons/gi";
 import { usePathname, useRouter } from "next/navigation";
+import { MenuSidebarProps } from "@/interfaces/layouts/menuSidebarProps";
 
+/**
+ *  Componente de Separación entre acciones
+ */
+export function SeparatorSidebar({ children }: { children: string }) {
+    return (
+        <div className="p-2 ps-0 mt-2 border-t border-[#9F9F9F] font-bold text-xs text-[#9F9F9F] flex items-center justify-between">
+            <span >{children.toUpperCase()}</span>
+            <SquareMinus size={10} />
+        </div>
+    )
+}
+
+
+/**
+ *  Componente de Menu para cada acción
+ */
+export function MenuSidebar({ section, className, iconSize = 15 }: MenuSidebarProps) {
+    const Icon = section.icon;
+
+    const [isExpanded, setIsExpanded] = useState(false);
+    function toggleSection() {
+        setIsExpanded(!isExpanded);
+    }
+    return (
+        <>
+            {section.sub_section ? (
+                <div className="flex flex-col p-2 gap-2 items-center rounded-md">
+                    <button
+                        onClick={toggleSection}
+                        className={`flex items-center w-full ${className}`}
+                    >
+                        <Icon size={iconSize} />
+                        <span className="ml-2">{section.label}</span>
+                        {!isExpanded ? (
+                            <ChevronsDown size={15} className="ml-auto" />
+                        ) : (
+                            <ChevronUp size={15} className="ml-auto" />
+                        )}
+                    </button>
+
+
+                    {isExpanded && section.sub_section && (
+                        <div className="flex flex-col w-full pl-4">
+                            {section.sub_section.map((sub_sect, index) => (
+                                <Link
+                                    key={index}
+                                    href={sub_sect.link}
+                                    className="p-2 hover:bg-[#414141] rounded-md border-s rounded-s-none border-[#9F9F9F]"
+                                >
+                                    {sub_sect.label}
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+            ) : (
+                <Link
+                    href={section.link}
+                    className={`flex gap-2 p-2 items-center rounded-md hover:bg-[#313131] ${className}`}
+                >
+                    <Icon size={iconSize} /> <span> {section.label}</span>
+                </Link>
+            )}
+        </>
+    )
+}
+
+/**
+ *  Componnete
+ */
 export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
-
-    const inactiveLink = 'text-yellow-500 flex gap-1 p-2';
-    const activeLink = `${inactiveLink} bg-gray-950 flex gap-1 rounded-l-lg transition duration-300 ease-in-out`
-    const pathname = usePathname();
     const router = useRouter()
-    const sectionsNav = [
+    const firstSection = [
         {
             label: 'Home',
             link: '/dashboard',
-            icon: <Home size={20} />,
+            icon: Home,
+
         },
         {
             label: 'Cart',
             link: 'dashboard/myCart',
-            icon: <ShoppingCart size={20} />,
+            icon: ShoppingCart,
         },
         {
             label: 'Fruits',
             link: '/dashboard/fruits',
-            icon: <GiKiwiFruit size={20} />,
+            icon: GiKiwiFruit,
             sub_section: [
                 {
                     label: 'New Fruit',
@@ -39,7 +107,25 @@ export default function Sidebar() {
                 },
             ]
         },
+    ]
 
+
+    const secondSection = [
+        {
+            label: 'Section 2 - 1',
+            link: '#',
+            icon: LayoutPanelTop,
+            sub_section: [
+                {
+                    label: 'Section 2 - 1 - 1',
+                    link: '#',
+                },
+                {
+                    label: 'Section 2 - 1 - 2',
+                    link: '#',
+                },
+            ]
+        },
     ]
 
     const toggleSidebar = () => {
@@ -51,73 +137,36 @@ export default function Sidebar() {
     }
 
     return (
-        <>
-            <div className="text-yellow-400 p-4 pr-0 flex flex-col gap-2">
+        <aside>
+            <div className="flex p-4 gap-10 flex-col">
                 <Link
                     href="/dashboard"
-                    className="flex gap-1 mb-4 p-2 pr-5"
+                    className="flex gap-1 items-center text-[#F21019] font-semibold"
                 >
-                    <Store />
-                    <span>Store Fruit</span>
+                    <Store /> <span>Adru Fruits Dashboard</span>
                 </Link>
 
+                <nav className="flex flex-col font-light gap-1 text-[14px]">
 
-                <Link
-                    href="/dashboard/profile/5348"
-                    className="flex flex-col gap-2 mb-4 p-2"
-                >
-                    <img
-                        className="w-20 h-20 rounded-full object-cover"
-                        src="https://plus.unsplash.com/premium_photo-1673866484792-c5a36a6c025e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="img of profile"
-                    />
-                    <span className="text-sm font-light">
-                        User Name
-                    </span>
-                </Link>
+                    <SeparatorSidebar>
+                        First Actions
+                    </SeparatorSidebar>
 
-                <nav
-                    className="flex flex-col gap-2"
-                >
-                    {sectionsNav.map((section) => (
+                    {/* Acciones del Sidebar */}
+                    {firstSection.map((section) => (
+                        <MenuSidebar key={section.label} section={section} />
+                    ))}
 
-                        <div key={section.label}>
-                            <Link
-                                className={pathname === section.link ? activeLink : inactiveLink}
-                                href={section.link}
-                            >
-                                {section.icon} <span>{section.label}</span>
-                            </Link>
+                    <SeparatorSidebar>
+                        Second Actions
+                    </SeparatorSidebar>
 
-                            {section.sub_section?.map((sub_section) => (
-                                <Link
-                                    key={sub_section.label}
-                                    className={pathname === sub_section.link ? activeLink : inactiveLink}
-                                    href={sub_section.link}
-                                >
-                                    <span className="ml-4">- {sub_section.label}</span>
-                                </Link>
-                            ))}
-                        </div>
-
-
+                    {/* Acciones del Sidebar */}
+                    {secondSection.map((section) => (
+                        <MenuSidebar key={section.label} section={section} />
                     ))}
                 </nav>
-                <button
-                    onClick={hadleLogout}
-                    className="flex gap-1 items-center bg-red-800 text-white p-2 rounded-sm w-fit">
-                    <DoorOpen size={20} /> <span>Logout</span>
-                </button>
-
-                <Link
-                    className="flex flex-col gap-2 items-center bg-cyan-500 text-cyan-950 p-3 mr-2 rounded-md"
-                    href="/dashboard/fruits/new"
-                >
-                    <BadgePlus size={60} />
-                    <span className="font-extrabold">
-                        Add a New Fruit
-                    </span>
-                </Link>
             </div>
-        </>
+        </aside>
     );
 }

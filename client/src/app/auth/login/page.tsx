@@ -28,8 +28,9 @@ export default function LoginPage() {
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         const res = await LoginService(data);
         if (res) {
-            toast.success('Successful authentication my king ❤');
-            router.push('/dashboard');
+            setTimeout(() => {
+                router.push('/dashboard');
+            }, 3000);
         }
     }
 

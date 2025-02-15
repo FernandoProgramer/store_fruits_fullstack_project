@@ -1,6 +1,8 @@
+// app/dashboard/layout.tsx (DashboardLayout)
 import Sidebar from "@/components/layouts/Sidebar";
 import { Roboto } from "next/font/google";
 import { ReactNode } from "react";
+import { Toaster } from "sonner";
 
 export const metadata = {
     title: 'Dashboard | Store Fruits 🍊',
@@ -11,17 +13,22 @@ export const metadata = {
 const roboto = Roboto({
     weight: '400',
     subsets: ['latin'],
-})
+});
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
-        <div className={roboto.className}>
-            <div className="bg-gradient-to-t from-red-900 to-slate-900 min-h-screen flex">
-                <Sidebar />
-                <div className="bg-gray-950 text-white flex-grow rounded-tl-[2rem] rounded-bl-[2rem] p-10">
-                    {children}
+        <html lang="es">
+            <body>
+                <div className={roboto.className}>
+                    <Toaster />
+                    <div className="bg-[#222124] min-h-screen flex">
+                        <Sidebar />
+                        <div className="bg-[#141414] flex-grow p-4">
+                            {children}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    )
+            </body>
+        </html>
+    );
 }

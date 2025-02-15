@@ -1,10 +1,9 @@
-import React from 'react'
-
-export default function Dashboard() {
+// app/dashboard/page.tsx
+export default function DashboardPage() {
     return (
-        <>
-            <div>Dashboard</div>
-            <h1>Hola locotas</h1>
-        </>
-    )
+        <div>
+            <h1>Dashboard</h1>
+            <p>Bienvenido al panel de control.</p>
+        </div>
+    );
 }
